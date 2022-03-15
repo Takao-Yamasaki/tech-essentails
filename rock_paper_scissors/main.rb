@@ -1,24 +1,10 @@
 class RockPaperScissors
-  def initialize
-    puts "何本勝負？(press 1 or 3 or 5)"
-    
-    # 押されたキーを取得
-    # @keyをfightメソッドに渡す
-    @key = gets.chomp!.to_i
-    
-    if @key != 1 && @key != 3 && @key != 5
-      return puts 'もう一度実行し直してください'
-    else
-      puts "#{@key}本勝負を選びました"
-    end
-  end
-
-  def fight
+  def fight(game_count)
     win = 0
     lose = 0
     one_more =0
 
-    @key.times do |n|
+    game_count.times do |n|
       # あいこだった場合、one_more = 1となっている
       if one_more == 1
         puts "あいこで...(press g or c or p)" 
@@ -62,4 +48,15 @@ class RockPaperScissors
 end
 
 rock_paper_scissors = RockPaperScissors.new
-rock_paper_scissors.fight
+
+puts "何本勝負？(press 1 or 3 or 5)"   
+# 押されたキーを取得
+game_count = gets.chomp!.to_i
+
+if game_count != 1 && game_count != 3 && game_count != 5
+  return puts 'もう一度実行し直してください'
+else
+  puts "#{game_count}本勝負を選びました"
+end
+
+rock_paper_scissors.fight(game_count)
