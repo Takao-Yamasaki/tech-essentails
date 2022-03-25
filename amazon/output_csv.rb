@@ -12,23 +12,17 @@ url_array = [
 items = {}
 
 # URLの加工
-url_array.each do |url|
-  # 商品IDを抽出
-  item_id = url.split('/')[5]
-  # 商品名を抽出し、エンコーディングを変換
-  item_name = URI.decode_www_form_component(url.split('/')[3])
-  # ハッシュ化する
-  items[item_id] = item_name 
-end
+# key: urlから商品IDを抽出したものを格納
+# value: urlから商品名を抽出し、エンコーディングを変換したものを格納
+# mapだと配列を返すので、to_hでハッシュ化する
+items =  url_array.map { |url| [url.split('/')[5], URI.decode_www_form_component(url.split('/')[3])] }.to_h
 
 # CSVの書き出し
-CSV.open('./result.csv','w') do |test|
+CSV.open('./result.csv','w') do |result|
   # ヘッダを出力
-  test << ['商品ID','商品名']
-  items.each do |key, value|
-    # 明細行を出力
-    test << [key, value]
-  end
+  result << ['商品ID','商品名']
+  # 明細行を出力
+  items.map {|key, value| result << [key, value]} 
 end
 
 puts 'CSV出力が終了しました'
