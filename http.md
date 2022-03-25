@@ -19,3 +19,9 @@
 [![Image from Gyazo](https://i.gyazo.com/7d2fbd5a4fb7d3d40a53455d2e8c28e6.png)](https://gyazo.com/7d2fbd5a4fb7d3d40a53455d2e8c28e6)
 
 [![Image from Gyazo](https://i.gyazo.com/3dc6843b4a47080a5470279866890282.jpg)](https://gyazo.com/3dc6843b4a47080a5470279866890282)
+
+
+## フォームの送信内容（メッセージボディ）って開発者ツールでいうとどの画面のどの部分で確認できるでしょう？ 
+
+- フォームの送信内容については、次の画像のとおり、開発者ツールのPayloadで確認することができる。
+[![Image from Gyazo](https://i.gyazo.com/201102e4ed4a970bd4f549bd9aff5cea.png)](https://gyazo.com/201102e4ed4a970bd4f549bd9aff5cea)
