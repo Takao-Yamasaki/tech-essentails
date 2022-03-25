@@ -12,3 +12,7 @@
     - 代表的なステータスコードとしては、「4xx Client Error（クライアントエラー）」と「5xx Server Error（サーバーエラー）」がある。
       - クライアントエラーの404は、要求されたWebページが存在しない場合に返されるステータスコード。
       - サーバーエラーの503は、Webサーバーに負荷がかかり、一時的にWebサイトが表示できない場合に返されるステータスコード。
+
+[![Image from Gyazo](https://i.gyazo.com/7d2fbd5a4fb7d3d40a53455d2e8c28e6.png)](https://gyazo.com/7d2fbd5a4fb7d3d40a53455d2e8c28e6)
+
+[![Image from Gyazo](https://i.gyazo.com/3dc6843b4a47080a5470279866890282.jpg)](https://gyazo.com/3dc6843b4a47080a5470279866890282)
