@@ -1,0 +1,15 @@
+- users
+  - name:string
+  - admin:boolean
+  - email:string
+  - image:string
+  - password:string
+  - password_digest:string
+- questions
+  - user_id:integer
+  - title:string
+  - description:text
+  - answered_flag:boolean
+- answers
+  - user_id:integer
+  - description:text
