@@ -12,4 +12,5 @@
   - answered_flag:boolean
 - answers
   - user_id:integer
+  - question_id:integer
   - description:text
