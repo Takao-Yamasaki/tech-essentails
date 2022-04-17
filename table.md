@@ -3,7 +3,6 @@
   - admin:boolean
   - email:string
   - image:string
-  - password:string
   - password_digest:string
 - questions
   - user_id:integer
