@@ -21,7 +21,7 @@
 1. また、```<form>```内の```<input>```要素では、```name=tasks[name]```とパラメータ指定がされており、```task```インスタンスの```name```プロパティと関連付けされている。この```<input>```内にタスク名(name)を入力する。
 [![Image from Gyazo](https://i.gyazo.com/61b29a212a35d57d17476f2b74cd11b6.png)](https://gyazo.com/61b29a212a35d57d17476f2b74cd11b6)
 ### 2.3 作成ボタンを押す
-1. 「登録する」ボタンを押すと、今度はWebサーバーのURL（```/tasks```）に対してPOSTメソッドでHTTPリクエストする。このとき、```form_with```メソッドを使用したリクエストパラメータも送信する。
+1. 「登録する」ボタンを押すと、今度はWebサーバーのURL（```/tasks```）に対してPOSTメソッドでHTTPリクエストする。このとき、```form_with```メソッド内で記載したフォームの内容（```name=tasks[name]```など）もパラメータとして併せて送信される。
 1. 登録する押下後のネットワークタブ。リクエストURL（```/tasks```）とリクエストメソッド(```POST```メソッド)を確認することができる。
 [![Image from Gyazo](https://i.gyazo.com/6db9cdab893a4d96298ab38a1c276cae.png)](https://gyazo.com/6db9cdab893a4d96298ab38a1c276cae)
 1. リクエストされたURLを基づき、ルーティング（URLに基づいた経路を振り分け）を行い、```routes.rb```に定義された```tasks```コントローラーの```create```アクションを呼び出す。
