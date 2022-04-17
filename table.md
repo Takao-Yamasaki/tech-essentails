@@ -9,7 +9,7 @@
   - user_id:integer
   - title:string
   - description:text
-  - answered_flag:boolean
+  - resolved:boolean
 - answers
   - user_id:integer
   - question_id:integer
