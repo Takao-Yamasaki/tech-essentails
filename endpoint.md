@@ -8,11 +8,11 @@
 | 質問一覧を表示する（未解決）             | GET          | /questions/unsolved    | questions#unsolved      | 
 | 質問一覧を表示する（解決済み）           | GET          | /questions/solved      | questions#solved        | 
 | 質問投稿ページを表示する                 | GET          | /questions/new         | questions#new           | 
-| 質問投稿をする                           | POST         | /questions/create      | questions#create        | 
+| 質問投稿をする                           | POST         | /questions             | questions#create        | 
 | 質問詳細を表示する                       | GET          | /questions/:id         | questions#show          | 
 | 質問編集ページを表示する                 | GET          | /questions/:id/edit    | questions#edit          | 
 | 質問を削除する                           | DELETE       | /questions/:id         | questions#destroy       | 
-| 回答する                                 | POST         | /answers/:id/create    | answers#create        | 
+| 回答する                                 | POST         | /questions/:id/answers | answers#create        | 
 | ユーザー一覧を表示する                   | GET          | /users                 | users#index             | 
 | 管理画面用のログインページを表示する     | GET          | /admin/login           | admin/sessions#new      | 
 | （管理画面）質問一覧ページを表示する     | GET          | /admin/questions       | admin/questions#index   | 
