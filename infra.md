@@ -33,3 +33,13 @@
     - サーバーの負荷を監視し、負荷が少ないサーバーに優先してリクエストを振り分ける方式。
   - パーシステンス
     - 同一クライアントからのアクセスを判別し、常に同じサーバーへ転送する機能。
+
+## 追加質問）hostsの向き先を変えるには？
+- ターミナルで`sudo vi /private/etc/hosts`にアクセスする・
+- `www.yahoo.co.jp`のIPアドレス(182.22.25.252)を調べる。
+- hostsファイルに`182.22.25.252 google.com`を追記する。
+- Webブラウザで`google.com`にアクセス。
+- 下の画像は、example.comになっています。
+[![Image from Gyazo](https://i.gyazo.com/086e94d6e427e7e160cad36d708f3445.png)](https://gyazo.com/086e94d6e427e7e160cad36d708f3445)
+## 参考
+- [hostsを設定してWebサイトの動作確認をする](https://support.conoha.jp/w/hosts/)
