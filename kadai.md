@@ -396,7 +396,44 @@ irb(main):006:1> end
 +--------+----------------+--------------+
 3 rows in set
 ```
+- salalyに格納されるのは、コレクションなので、複数形の'salaries'を使用
+```
+# DBから取得して、salalyに格納
+salaries = Salary.joins(:employee).select("employees.emp_no").select("CONCAT(employees.first_name,' ',employees.last_name) AS full_name").where(emp_no: ["10001","10002","10003"]).group(:emp_no).select("SUM(salary) AS total_salary")
+  Salary Load (1.8ms)  SELECT employees.emp_no, CONCAT(employees.first_name,' ',employees.last_name) AS full_name, SUM(salary) AS total_salary FROM `salaries` INNER JOIN `employees` ON `employees`.`emp_no` = `salaries`.`emp_no` WHERE `salaries`.`emp_no` IN (10001, 10002, 10003) GROUP BY `salaries`.`emp_no`
++--------+----------------+--------------+
+| emp_no | full_name      | total_salary |
++--------+----------------+--------------+
+| 10001  | Georgi Facello | 1281612      |
+| 10002  | Bezalel Simmel | 413127       |
+| 10003  | Parto Bamford  | 301212       |
++--------+----------------+--------------+
+3 rows in set
 
+# コンソールに出力
+irb(main):003:0> salaries.each do |s|
+irb(main):004:1* p "emp_no: #{s.emp_no}"
+irb(main):005:1> p "full_name: #{s.full_name}"
+irb(main):006:1> p "total_salary: #{s.total_salary}"
+irb(main):007:1> end
+"emp_no: 10001"
+"full_name: Georgi Facello"
+"total_salary: 1281612"
+"emp_no: 10002"
+"full_name: Bezalel Simmel"
+"total_salary: 413127"
+"emp_no: 10003"
+"full_name: Parto Bamford"
+"total_salary: 301212"
++--------+----------------+--------------+
+| emp_no | full_name      | total_salary |
++--------+----------------+--------------+
+| 10001  | Georgi Facello | 1281612      |
+| 10002  | Bezalel Simmel | 413127       |
+| 10003  | Parto Bamford  | 301212       |
++--------+----------------+--------------+
+3 rows in set
+```
 ### いろいろ試行錯誤
 ```
 # そのままだと、ActiveRecordRelationクラスとなっている
