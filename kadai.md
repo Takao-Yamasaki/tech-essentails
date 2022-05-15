@@ -435,11 +435,14 @@ irb(main):007:1> end
 3 rows in set
 ```
 ### いろいろ試行錯誤
+- そのままだと、ActiveRecord::Relationクラスとなっている。
+  - ActiveRecord::Relationとは、必要に応じてSQLクエリを発行してくれる仕組みのことで、O/Rマッパーの一種。
+    - O/Rマッパー（Object/RDB Mapping）とは、オブジェクトとRDB間でデータを相互変換を行う機能のこと。
 ```
-# そのままだと、ActiveRecordRelationクラスとなっている
 salaly.class
  => Salary::ActiveRecord_Relation
 ```
+- 各Salaryインスタンスとして、データの取得などを行うためには、Salaryインスタンスの集合体であるsalalyをeachで回して、各Salaryインスタンスを取り出してあげる必要がある。
 ```
 s.class
 Salary(emp_no: integer, salary: integer, from_date: date, to_date: date)
@@ -449,3 +452,5 @@ Salary(emp_no: integer, salary: integer, from_date: date, to_date: date)
 
 ### 参考
 - [【Ruby】 to_aメソッドの使い方を理解しよう](https://pikawaka.com/ruby/to_a)
+- [O/Rマッピング](https://e-words.jp/w/O-R%E3%83%9E%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0.html)
+- [ActiveRecord::Relationとは一体なんなのか](https://spirits.appirits.com/doruby/8831/)
