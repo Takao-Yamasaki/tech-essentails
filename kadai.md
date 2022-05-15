@@ -165,11 +165,48 @@ irb(main):010:0> Salary.joins(:employee).select("employees.emp_no","employees.bi
 +--------+------------+------------+-----------+--------+------------+
 15 rows in set
 ```
+- 正規表現を使って、リファクタリング
+```
+Salary.joins(:employee).select("employees.*").where(salary: 150000...).distinct
+  Salary Load (1595.2ms)  SELECT DISTINCT employees.* FROM `salaries` INNER JOIN `employees` ON `employees`.`emp_no` = `salaries`.`emp_no` WHERE `salaries`.`salary` >= 150000
++--------+------------+------------+-----------+--------+------------+
+| emp_no | birth_date | first_name | last_name | gender | hire_date  |
++--------+------------+------------+-----------+--------+------------+
+| 43624  | 1953-11-14 | Tokuyasu   | Pesch     | M      | 1985-03-26 |
+| 46439  | 1953-01-31 | Ibibia     | Junet     | M      | 1985-05-20 |
+| 47978  | 1956-03-24 | Xiahua     | Whitcomb  | M      | 1985-07-18 |
+| 66793  | 1964-05-15 | Lansing    | Kambil    | M      | 1985-06-20 |
+| 80823  | 1963-01-21 | Willard    | Baca      | M      | 1985-02-26 |
+| 109334 | 1955-08-02 | Tsutomu    | Alameldin | M      | 1985-02-15 |
+| 205000 | 1956-01-14 | Charmane   | Griswold  | M      | 1990-06-23 |
+| 237542 | 1954-10-05 | Weicheng   | Hatcliff  | F      | 1985-04-12 |
+| 238117 | 1959-06-21 | Mitsuyuki  | Stanfel   | M      | 1988-01-03 |
+| 253939 | 1957-12-03 | Sanjai     | Luders    | M      | 1987-04-15 |
+| 254466 | 1963-05-27 | Honesty    | Mukaidono | M      | 1986-08-08 |
+| 266526 | 1957-02-14 | Weijing    | Chenoweth | F      | 1986-10-08 |
+| 276633 | 1954-01-27 | Shin       | Birdsall  | M      | 1987-10-08 |
+| 279776 | 1955-05-06 | Mohammed   | Moehrke   | M      | 1986-06-10 |
+| 493158 | 1961-05-20 | Lidong     | Meriste   | M      | 1987-05-09 |
++--------+------------+------------+-----------+--------+------------+
+15 rows in set
+```
 
 ## 4.150000以上の給料をもらったことがある女性従業員の一覧を取得してください
 ```
 irb(main):015:0> Salary.joins(:employee).select("employees.emp_no","employees.birth_date","employees.first_name","employees.last_name","employees.gender","employees.hire_date").where(salary: 150000...).distinct.where(employees: {gender: "F"})
   Salary Load (1396.6ms)  SELECT DISTINCT employees.emp_no, employees.birth_date, employees.first_name, employees.last_name, employees.gender, employees.hire_date FROM `salaries` INNER JOIN `employees` ON `employees`.`emp_no` = `salaries`.`emp_no` WHERE `salaries`.`salary` >= 150000 AND `employees`.`gender` = 'F'
++--------+------------+------------+-----------+--------+------------+
+| emp_no | birth_date | first_name | last_name | gender | hire_date  |
++--------+------------+------------+-----------+--------+------------+
+| 237542 | 1954-10-05 | Weicheng   | Hatcliff  | F      | 1985-04-12 |
+| 266526 | 1957-02-14 | Weijing    | Chenoweth | F      | 1986-10-08 |
++--------+------------+------------+-----------+--------+------------+
+2 rows in set
+```
+- 正規表現を使ってリファクタリング
+```
+Salary.joins(:employee).select("employees.*").where(salary: 150000...).distinct.where(employees: {gender: "F"})
+  Salary Load (709.3ms)  SELECT DISTINCT employees.* FROM `salaries` INNER JOIN `employees` ON `employees`.`emp_no` = `salaries`.`emp_no` WHERE `salaries`.`salary` >= 150000 AND `employees`.`gender` = 'F'
 +--------+------------+------------+-----------+--------+------------+
 | emp_no | birth_date | first_name | last_name | gender | hire_date  |
 +--------+------------+------------+-----------+--------+------------+
@@ -214,6 +251,23 @@ irb(main):005:0>Title.joins(:employee).select("employees.emp_no","employees.birt
 +--------+------------+------------+-----------+--------+------------+
 7 rows in set
 ```
+- 正規表現を使ってリファクタリング
+```
+irb(main):006:0> Title.joins(:employee).select("employees.*").where(title: "Technique Leader").where(from_date: "2000-1-29"..)
+  Title Load (158.7ms)  SELECT employees.* FROM `titles` INNER JOIN `employees` ON `employees`.`emp_no` = `titles`.`emp_no` WHERE `titles`.`title` = 'Technique Leader' AND `titles`.`from_date` >= '2000-01-29'
++--------+------------+------------+-----------+--------+------------+
+| emp_no | birth_date | first_name | last_name | gender | hire_date  |
++--------+------------+------------+-----------+--------+------------+
+| 79962  | 1953-05-29 | Maik       | Heping    | M      | 1995-08-09 |
+| 83076  | 1960-09-07 | Jacopo     | Thiria    | M      | 1999-07-20 |
+| 88961  | 1954-03-07 | Uta        | Asser     | F      | 1998-12-02 |
+| 203599 | 1965-01-21 | Ewing      | DiGiano   | M      | 1985-04-27 |
+| 253428 | 1954-04-06 | Ortrun     | Benner    | F      | 1995-01-31 |
+| 262244 | 1963-05-08 | Gal        | Ramaiah   | F      | 1989-08-01 |
+| 414550 | 1960-02-01 | Sandeepan  | Krogh     | F      | 1992-01-04 |
++--------+------------+------------+-----------+--------+------------+
+7 rows in set
+```
 
 ## 7.部署番号がd001である部署のマネージャー歴代一覧を取得してきてください
 ```
@@ -227,7 +281,18 @@ irb(main):009:0> DeptManager.joins(:employee).select("employees.emp_no","employe
 +--------+------------+------------+------------+--------+------------+
 2 rows in set
 ```
-
+- 正規表現を使ってリファクタリング
+```
+irb(main):007:0> DeptManager.joins(:employee).select("employees.*").where(dept_no: "d001")
+  DeptManager Load (2.6ms)  SELECT employees.* FROM `dept_manager` INNER JOIN `employees` ON `employees`.`emp_no` = `dept_manager`.`emp_no` WHERE `dept_manager`.`dept_no` = 'd001'
++--------+------------+------------+------------+--------+------------+
+| emp_no | birth_date | first_name | last_name  | gender | hire_date  |
++--------+------------+------------+------------+--------+------------+
+| 110022 | 1956-09-12 | Margareta  | Markovitch | M      | 1985-01-01 |
+| 110039 | 1963-06-21 | Vishwani   | Minakawa   | M      | 1986-04-12 |
++--------+------------+------------+------------+--------+------------+
+2 rows in set
+```
 ## 8.歴代マネージャーにおける男女比を出してください
 ```
 irb(main):019:0> DeptManager.joins(:employee).group("employees.gender").count
@@ -246,6 +311,17 @@ irb(main):006:0> DeptManager.joins(:employee).select("employees.emp_no","employe
 +--------+------------+------------+-----------+--------+------------+
 1 row in set
 ```
+- 正規表現を使ってリファクタリング
+```
+irb(main):009:0> DeptManager.joins(:employee).select("employees.*").where(dept_no: "d004").where("from_date <= ?","1999-1-1").where("to_date >= ?","1999-1-1")
+  DeptManager Load (3.1ms)  SELECT employees.* FROM `dept_manager` INNER JOIN `employees` ON `employees`.`emp_no` = `dept_manager`.`emp_no` WHERE `dept_manager`.`dept_no` = 'd004' AND (from_date <= '1999-1-1') AND (to_date >= '1999-1-1')
++--------+------------+------------+-----------+--------+------------+
+| emp_no | birth_date | first_name | last_name | gender | hire_date  |
++--------+------------+------------+-----------+--------+------------+
+| 110420 | 1963-07-27 | Oscar      | Ghazalie  | M      | 1992-02-05 |
++--------+------------+------------+-----------+--------+------------+
+1 row in set
+```
 ## 10.従業員番号が10001, 10002, 10003の従業員が今までに稼いだ給料の合計を従業員ごとに集計してください
 ```
 irb(main):001:0> Salary.joins(:employee).where(emp_no: ["10001","10002","10003"]).group(:emp_no).sum(:salary)
@@ -257,6 +333,19 @@ irb(main):001:0> Salary.joins(:employee).where(emp_no: ["10001","10002","10003"]
 ```
 irb(main):011:0> Salary.joins(:employee).select("employees.emp_no","employees.birth_date","employees.first_name","employees.last_name","employees.gender","employees.hire_date").where(emp_no: ["10001","10002","10003"]).group(:emp_no).select("SUM(salary) AS total_salary")
   Salary Load (28.2ms)  SELECT employees.emp_no, employees.birth_date, employees.first_name, employees.last_name, employees.gender, employees.hire_date, SUM(salary) AS total_salary FROM `salaries` INNER JOIN `employees` ON `employees`.`emp_no` = `salaries`.`emp_no` WHERE `salaries`.`emp_no` IN (10001, 10002, 10003) GROUP BY `salaries`.`emp_no`
++--------+------------+------------+-----------+--------+------------+--------------+
+| emp_no | birth_date | first_name | last_name | gender | hire_date  | total_salary |
++--------+------------+------------+-----------+--------+------------+--------------+
+| 10001  | 1953-09-02 | Georgi     | Facello   | M      | 1986-06-26 | 1281612      |
+| 10002  | 1964-06-02 | Bezalel    | Simmel    | F      | 1985-11-21 | 413127       |
+| 10003  | 1959-12-03 | Parto      | Bamford   | M      | 1986-08-28 | 301212       |
++--------+------------+------------+-----------+--------+------------+--------------+
+3 rows in set
+```
+- 正規表現を使ってリファクタリング
+```
+irb(main):011:0> Salary.joins(:employee).select("employees.*").where(emp_no: ["10001","10002","10003"]).group(:emp_no).select("SUM(salary) AS total_salary")
+  Salary Load (0.8ms)  SELECT employees.*, SUM(salary) AS total_salary FROM `salaries` INNER JOIN `employees` ON `employees`.`emp_no` = `salaries`.`emp_no` WHERE `salaries`.`emp_no` IN (10001, 10002, 10003) GROUP BY `salaries`.`emp_no`
 +--------+------------+------------+-----------+--------+------------+--------------+
 | emp_no | birth_date | first_name | last_name | gender | hire_date  | total_salary |
 +--------+------------+------------+-----------+--------+------------+--------------+
